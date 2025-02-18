@@ -10,7 +10,7 @@ using VEEGA_APP.Core.Interfaces;
 
 namespace VEEGA_APP.Infrastructure.Repos
 {
-    public class VehicleMakeRepository: BaseRepository<vehicle_make, int>, IVehicleMakeRepository
+    public class VehicleMakeRepository : BaseRepository<vehicle_make, int>, IVehicleMakeRepository
     {
         IMapper _mapper;
 
@@ -25,7 +25,7 @@ namespace VEEGA_APP.Infrastructure.Repos
                 var vehicleMakes = await GetAllWithNoTracking().Include(m => m.vehicle_model).OrderBy(x => x.name).ToListAsync();
                 return _mapper.Map<IList<VehicleMakeDTO>>(vehicleMakes);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }

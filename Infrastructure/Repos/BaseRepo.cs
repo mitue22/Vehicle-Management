@@ -9,7 +9,7 @@ using VEEGA_APP.Core.Interfaces;
 
 namespace VEEGA_APP.Infrastructure.Repos
 {
-    public abstract class BaseRepository<TEntity, Tkey>: IBaseRepository<TEntity, Tkey> where TEntity: class
+    public abstract class BaseRepository<TEntity, Tkey> : IBaseRepository<TEntity, Tkey> where TEntity : class
     {
         protected readonly DbContext _DBContext;
 
@@ -44,7 +44,7 @@ namespace VEEGA_APP.Infrastructure.Repos
 
         public void Add(TEntity entity)
         {
-                _DBContext.Set<TEntity>().Add(entity);
+            _DBContext.Set<TEntity>().Add(entity);
         }
 
         public void AddRange(IEnumerable<TEntity> entities)
@@ -55,7 +55,7 @@ namespace VEEGA_APP.Infrastructure.Repos
         public async Task<bool> IsExists(Expression<Func<TEntity, bool>> wherePredicate)
         {
             return
-               await  _DBContext.Set<TEntity>().AnyAsync(wherePredicate);
+               await _DBContext.Set<TEntity>().AnyAsync(wherePredicate);
         }
 
         public void Remove(TEntity entity)

@@ -9,25 +9,25 @@ using VEEGA_APP.Core.Interfaces;
 
 namespace VEEGA_APP.Infrastructure.Repos
 {
-    public class VehicleFeatureRepository: BaseRepository<vehicle_feature, int>, IVehicleFeatureRepository
+    public class VehicleFeatureRepository : BaseRepository<vehicle_feature, int>, IVehicleFeatureRepository
     {
-         IMapper _mapper;
-            public VehicleFeatureRepository(VeegaContext context, IMapper mapper) : base(context)
+        IMapper _mapper;
+        public VehicleFeatureRepository(VeegaContext context, IMapper mapper) : base(context)
         {
             _mapper = mapper;
         }
-            public async Task<IList<VehicleBaseDTO>> GetAllVehicleFeature()
+        public async Task<IList<VehicleBaseDTO>> GetAllVehicleFeature()
+        {
+            try
             {
-                try
-                {
                 var vehicleFeatures = await GetAllWithNoTracking().ToListAsync();
 
                 return _mapper.Map<IList<VehicleBaseDTO>>(vehicleFeatures);
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
             }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
+using System;
 using System.IO;
 using VEEGA_APP.Core.Interfaces;
 using VEEGA_APP.Helpers;
@@ -18,12 +20,13 @@ namespace VEEGA_APP
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+
+        public Startup(IWebHostEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("AppSettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"AppSettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
 
             configuration = builder.Build();
@@ -34,7 +37,11 @@ namespace VEEGA_APP
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.EnableEndpointRouting = false; // Disable Endpoint Routing
+            });
+            services.AddControllersWithViews();
 
             //Add Authentication Services
             services.AddAuthentication(options =>
@@ -52,7 +59,8 @@ namespace VEEGA_APP
             {
                 configuration.RootPath = "ClientApp/dist";
             });
-            services.AddAutoMapper();
+            //services.AddAutoMapper();
+            services.AddAutoMapper(typeof(Startup));
 
             // Inject AppIdentitySettings so that others can use too
             services.Configure<PhotoSettings>(configuration.GetSection("PhotoSettings"));
@@ -75,7 +83,7 @@ namespace VEEGA_APP
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
+                    builder => builder.SetIsOriginAllowed(origin => true)
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials());
@@ -83,7 +91,7 @@ namespace VEEGA_APP
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -118,6 +126,7 @@ namespace VEEGA_APP
 
                 if (env.IsDevelopment())
                 {
+                    spa.Options.StartupTimeout = TimeSpan.FromSeconds(10);
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
@@ -135,9 +144,15 @@ namespace VEEGA_APP
             //        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads")),
             //    RequestPath = "/Myuploads"
             //});
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
             app.UseCors("CorsPolicy");
             //enable authentication middleware
+            app.UseRouting();
+
             app.UseAuthentication();
+            app.UseAuthorization();
             app.UseMvc();
             app.Run(async (context) =>
             {

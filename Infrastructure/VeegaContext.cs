@@ -3,14 +3,22 @@ using VEEGA_APP.Core.DataObjects.Entities;
 
 namespace VEEGA_APP.Infrastructure
 {
-    public class VeegaContext: DbContext
+    public class VeegaContext : DbContext
     {
-       public VeegaContext(DbContextOptions<VeegaContext> options) : base(options)
+        public VeegaContext(DbContextOptions<VeegaContext> options) : base(options)
         {
 
         }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(
+                "Server=LAPTOP-NTSLOF18;Database=VehicleManagement;Trusted_Connection=True;TrustServerCertificate=True;",
+                sqlServerOptions => sqlServerOptions.CommandTimeout(120)); // Set timeout to 120 seconds
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            base.OnModelCreating(modelBuilder);
 
             // For mapping complex types 
             modelBuilder.Entity<vehicle_details>(e =>

@@ -24,10 +24,10 @@ namespace VEEGA_APP.Controllers
         private IVehicleDetailsRepository _vehicleDetailsRepo;
         private IVehiclePhotoRepository _vehiclePhotoRepo;
         private IUnitOfWork _uow;
-        private IHostingEnvironment _host;
+        private IWebHostEnvironment _host;
         private IMapper _mapper;
 
-        public PhotoController(IHostingEnvironment host, IVehicleDetailsRepository vehicleDetailsRepo, IUnitOfWork uow, IOptionsSnapshot<PhotoSettings> options, IMapper mapper, IVehiclePhotoRepository vehiclePhotoRepo)
+        public PhotoController(IWebHostEnvironment host, IVehicleDetailsRepository vehicleDetailsRepo, IUnitOfWork uow, IOptionsSnapshot<PhotoSettings> options, IMapper mapper, IVehiclePhotoRepository vehiclePhotoRepo)
         {
             _host = host;
             _vehicleDetailsRepo = vehicleDetailsRepo;

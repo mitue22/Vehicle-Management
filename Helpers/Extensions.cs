@@ -26,7 +26,7 @@ namespace VEEGA_APP.Helpers
 
         public static IQueryable<T> ApplyPaging<T>(this IQueryable<T> query, QueryObject queryObj)
         {
-            if(queryObj.Page <= 0)
+            if (queryObj.Page <= 0)
                 queryObj.Page = 1;
 
             if (queryObj.PageSize <= 0)

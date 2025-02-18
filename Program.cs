@@ -19,6 +19,15 @@ namespace VEEGA_APP
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+             .ConfigureAppConfiguration((hostingContext, config) =>
+             {
+                 var env = hostingContext.HostingEnvironment;
+
+                 // Load appsettings.json and appsettings.{Environment}.json
+                 config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                       .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                       .AddEnvironmentVariables();
+             })
                 .UseKestrel()
                 .UseIISIntegration()
                 .UseContentRoot(Directory.GetCurrentDirectory())

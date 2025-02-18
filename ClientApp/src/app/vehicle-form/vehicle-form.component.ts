@@ -43,7 +43,7 @@ features;
   ngOnInit() {
     this.vehicleForm = this._formBuilder.group({
       makeId: [''],
-      modelId: ['', Validators.required],
+      modelId: [''],
       features: this._formBuilder.array([]),
       isRegistered: [],
       contact: this._formBuilder.group({

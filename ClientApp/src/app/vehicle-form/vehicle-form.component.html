@@ -13,7 +13,7 @@
             </select>
           </div>
           <div class="col mb-4">
-            <select formControlName="modelId" class="browser-default custom-select" [ngClass]="{'is-invalid': modelId.touched && (modelId.errors?.required), 'is-valid': modelId.valid}">
+            <select formControlName="modelId" class="browser-default custom-select">
               <option value = "" disabled>Select model</option>
               <option *ngFor="let m of models" value="{{m.id}}">{{m.name}}</option>
             </select>

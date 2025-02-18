@@ -24,7 +24,7 @@ namespace VEEGA_APP.Controllers
         }
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> CreateVehicleDetails([FromBody]VehicleDetailsWDTO model)
         {
             try
