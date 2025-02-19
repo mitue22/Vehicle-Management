@@ -1,2 +1,1 @@
-*.cs linguist-vendored=false
-**/ClientApp/wwwroot/*.js linguist-vendored # exact, absolute path
+"* text=auto" 
